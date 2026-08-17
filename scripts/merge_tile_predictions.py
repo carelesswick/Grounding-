@@ -113,7 +113,7 @@ def main():
     ap.add_argument("--overlap", type=float, default=0.2)
     ap.add_argument("--nms-iou", type=float, default=0.5)
     ap.add_argument("--match-iou", type=float, default=0.5)
-    ap.add_argument("--max-tile-cover", type=float, default=0.8)
+    ap.add_argument("--max-tile-cover", type=float, default=0.6)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--output", default="/data1/liyifan/BigModel/work_dirs/eval_full_images.json")
     args = ap.parse_args()
