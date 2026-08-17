@@ -113,6 +113,7 @@ def main():
     ap.add_argument("--overlap", type=float, default=0.2)
     ap.add_argument("--nms-iou", type=float, default=0.5)
     ap.add_argument("--match-iou", type=float, default=0.5)
+    ap.add_argument("--max-tile-cover", type=float, default=0.8)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--output", default="/data1/liyifan/BigModel/work_dirs/eval_full_images.json")
     args = ap.parse_args()
@@ -170,12 +171,14 @@ def main():
                 answer = result["answer"] if isinstance(result, dict) else str(result)
                 for label, norm_box in parse_boxes(answer):
                     bx1, by1, bx2, by2 = norm_box
-                    pred_boxes.append((label, (
-                        bx1 / 1000 * tw + x,
-                        by1 / 1000 * th + y,
-                        bx2 / 1000 * tw + x,
-                        by2 / 1000 * th + y,
-                    )))
+                    px1 = bx1 / 1000 * tw + x
+                    py1 = by1 / 1000 * th + y
+                    px2 = bx2 / 1000 * tw + x
+                    py2 = by2 / 1000 * th + y
+                    area_ratio = (px2 - px1) * (py2 - py1) / (tw * th)
+                    if area_ratio > args.max_tile_cover:
+                        continue
+                    pred_boxes.append((label, (px1, py1, px2, py2)))
             pred_boxes = nms(pred_boxes, args.nms_iou)
             gts = [(s["label"], s["box"]) for s in rec["shapes"]]
             used_pred = set()
@@ -254,6 +257,9 @@ def main():
                     py1 = by1 / 1000 * th + y
                     px2 = bx2 / 1000 * tw + x
                     py2 = by2 / 1000 * th + y
+                    area_ratio = (px2 - px1) * (py2 - py1) / (tw * th)
+                    if area_ratio > args.max_tile_cover:
+                        continue
                     pred_boxes.append((label, (px1, py1, px2, py2)))
 
         pred_boxes = nms(pred_boxes, args.nms_iou)
