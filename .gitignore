@@ -1,0 +1,47 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+*.log
+
+# Large data / artifacts
+datasets/
+models/
+work_dirs/
+logs/
+grounding/
+
+# Model / image / data files
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+*.jpg
+*.jpeg
+*.png
+*.JPG
+*.JPEG
+*.json
+*.jsonl
+*.yaml
+*.yml
+*.zip
+*.tar
+*.gz
+*.mp4
+*.avi
+
+# Secret
+.credentials*
+.env
