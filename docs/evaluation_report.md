@@ -204,3 +204,29 @@ IoU 阈值：0.5
 ```bash
 scp server:/data1/liyifan/BigModel/work_dirs/vis/compare/compare_idx1.jpg .
 ```
+
+### 11.1 全部验证图对比
+
+已生成全部 80 张验证图的对比图：
+
+```text
+/data1/liyifan/BigModel/work_dirs/vis/compare_all/
+```
+
+包含：
+- `compare_idx0.jpg` ~ `compare_idx79.jpg`
+- `index.html`：浏览器画廊，可直接打开查看全部图片
+
+下载整个目录：
+
+```bash
+scp -r server:/data1/liyifan/BigModel/work_dirs/vis/compare_all .
+```
+
+或只下载 HTML 画廊后，把图片放在同目录用浏览器打开：
+
+```bash
+scp -r server:/data1/liyifan/BigModel/work_dirs/vis/compare_all ./compare_all
+```
+
+然后打开 `compare_all/index.html`。

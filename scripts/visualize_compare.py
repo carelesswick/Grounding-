@@ -36,6 +36,8 @@ def draw_boxes(img, boxes, color, width=6):
     draw = ImageDraw.Draw(img)
     for label, bbox in boxes:
         x1, y1, x2, y2 = bbox
+        x1, x2 = sorted([x1, x2])
+        y1, y2 = sorted([y1, y2])
         draw.rectangle([x1, y1, x2, y2], outline=color, width=width)
         draw.text((x1 + 4, max(0, y1 + 4)), label, fill=color)
     return img
