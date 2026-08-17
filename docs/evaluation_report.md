@@ -178,3 +178,29 @@ IoU 阈值：0.5
 - 2500 步相比 2000 步出现轻微下降或持平
 - 判断已接近收敛，停止继续增加步数
 - 推荐使用 checkpoint-2000 作为当前最终模型
+
+## 11. 可视化对比
+
+已生成不同 checkpoint 在同一验证图上的预测对比图。
+
+图例：
+- 绿色框：真实标注 GT
+- 红色框：checkpoint-600
+- 橙色框：checkpoint-1000
+- 黄色框：checkpoint-1500
+- 蓝色框：checkpoint-2000
+- 紫色框：checkpoint-2500
+
+图片路径（服务器本地）：
+
+```text
+/data1/liyifan/BigModel/work_dirs/vis/compare/compare_idx1.jpg
+/data1/liyifan/BigModel/work_dirs/vis/compare/compare_idx5.jpg
+/data1/liyifan/BigModel/work_dirs/vis/compare/compare_idx6.jpg
+```
+
+可通过 scp 下载到本地查看：
+
+```bash
+scp server:/data1/liyifan/BigModel/work_dirs/vis/compare/compare_idx1.jpg .
+```
