@@ -230,3 +230,41 @@ scp -r server:/data1/liyifan/BigModel/work_dirs/vis/compare_all ./compare_all
 ```
 
 然后打开 `compare_all/index.html`。
+
+### 11.2 单 checkpoint 单独对比图（推荐查看）
+
+已生成每个 checkpoint 单独的对比图，每张图只包含：
+- 绿色框：真实标注 GT
+- 一种颜色框：对应 checkpoint 的预测框
+
+目录：
+
+```text
+/data1/liyifan/BigModel/work_dirs/vis/compare_individual/
+├── checkpoint-600/
+├── checkpoint-1000/
+├── checkpoint-1500/
+├── checkpoint-2000/
+├── checkpoint-2500/
+└── index.html
+```
+
+每个 checkpoint 目录下有 80 张图：
+
+```text
+compare_idx0.jpg ~ compare_idx79.jpg
+```
+
+并配有 `index.html`，可用浏览器打开查看。
+
+下载：
+
+```bash
+scp -r server:/data1/liyifan/BigModel/work_dirs/vis/compare_individual .
+```
+
+打开：
+
+```text
+compare_individual/index.html
+```
