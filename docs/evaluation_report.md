@@ -268,3 +268,32 @@ scp -r server:/data1/liyifan/BigModel/work_dirs/vis/compare_individual .
 ```text
 compare_individual/index.html
 ```
+
+## 12. 多词 Prompt 实验
+
+### 12.1 实验内容
+
+将困难类别 prompt 改为多词特征描述，例如：
+
+- `nest` → `bird nest on steel structure`
+- `nut_missing` → `missing nut on steel structure`
+- `coating_dirty` → `dirty coating on bridge surface`
+
+重新生成训练数据并从基座/中间模型继续训练。
+
+### 12.2 结果
+
+| 模型 | Tile F1 | 整图 F1 |
+|---|---:|---:|
+| 旧模型 2000 步（短标签） | 0.6484 | 0.3286 |
+| 多词模型 2000 步 | 0.3633 | 0.1382 |
+
+### 12.3 结论
+
+- 多词 prompt 重新训练后指标明显下降
+- 可能原因：
+  - 训练流程/优化器重启导致未充分收敛
+  - 多词 prompt 增加了输出不确定性，模型输出与短标签不匹配
+  - 少样本类别本身仍难以通过 prompt 改变解决
+- 结论：**当前继续使用旧模型 checkpoint-2000 作为最终模型**
+- 后续可在推理阶段尝试多词 prompt，而不重新训练

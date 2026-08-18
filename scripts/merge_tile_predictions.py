@@ -10,14 +10,30 @@ from collections import defaultdict
 from pathlib import Path
 
 from PIL import Image
+from category_prompts import CATEGORY_PROMPTS
 
 BOX_RE = re.compile(r"<ref>(.*?)</ref><box><(\d+)><(\d+)><(\d+)><(\d+)></box>")
+CLASS_NAMES = list(CATEGORY_PROMPTS.keys())
+
+
+def normalize_label(label):
+    label = label.strip()
+    if label in CLASS_NAMES:
+        return label
+    low = label.lower()
+    for k, v in CATEGORY_PROMPTS.items():
+        if low == v.lower():
+            return k
+    for k in CLASS_NAMES:
+        if k in low:
+            return k
+    return label
 
 
 def parse_boxes(text):
     out = []
     for m in BOX_RE.finditer(text):
-        label = m.group(1)
+        label = normalize_label(m.group(1))
         x1, y1, x2, y2 = map(int, m.groups()[1:])
         out.append((label, (x1, y1, x2, y2)))
     return out
