@@ -25,7 +25,7 @@ def normalize_label(label):
         if low == v.lower():
             return k
     for k in CLASS_NAMES:
-        if k in low:
+        if k.lower() in low:
             return k
     return label
 
@@ -147,6 +147,12 @@ def main():
     if args.jsonl:
         import os
         samples = [json.loads(l) for l in open(args.jsonl)]
+        # collect GT class names for dynamic normalization
+        for smp in samples:
+            for m in BOX_RE.finditer(smp["conversations"][1]["value"]):
+                lab = m.group(1).strip()
+                if lab not in CLASS_NAMES:
+                    CLASS_NAMES.append(lab)
         # map stem -> record
         rec_by_stem = {r["stem"]: r for r in records}
         predictions = []

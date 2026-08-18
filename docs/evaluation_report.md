@@ -297,3 +297,42 @@ compare_individual/index.html
   - 少样本类别本身仍难以通过 prompt 改变解决
 - 结论：**当前继续使用旧模型 checkpoint-2000 作为最终模型**
 - 后续可在推理阶段尝试多词 prompt，而不重新训练
+
+## 13. 新数据集优化结果
+
+### 13.1 rail_dataset（轨道扣件）
+
+- 训练图：661，验证图：385
+- 类别：fastener / fastener_crack / fastener_missing
+- 训练方式：从基座 LoRA 2000 步，tile+crop
+
+评估（验证 tile 子集 500 条）：
+
+| 指标 | Tile 级 | 整图合并 |
+|---|---:|---:|
+| Precision | 0.9233 | 0.8355 |
+| Recall | 0.9542 | 0.9769 |
+| F1 | 0.9385 | 0.9007 |
+
+### 13.2 tower_dataset（铁塔螺栓）
+
+- 训练图：216，验证图：54
+- 类别：Normal antenna hoop bolt / Loose antenna hoop bolt / Normal tower bolt / Nest
+- 训练方式：从基座 LoRA 2000 步，tile+crop
+
+评估（验证 tile 222 条）：
+
+| 指标 | Tile 级 | 整图合并 |
+|---|---:|---:|
+| Precision | 0.8519 | 0.6335 |
+| Recall | 0.8625 | 0.8755 |
+| F1 | 0.8571 | 0.7351 |
+
+### 13.3 结论
+
+- rail_dataset 效果很好，Tile F1 0.9385，整图 F1 0.9007
+- tower_dataset 效果较好，Tile F1 0.8571，整图 F1 0.7351
+- 两个新数据集均明显收敛，可作为对应场景的专用 Grounding 模型
+- 模型路径：
+  - rail: work_dirs/rail_lora_2000/checkpoint-2000
+  - tower: work_dirs/tower_lora_2000/checkpoint-2000
