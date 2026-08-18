@@ -14,6 +14,7 @@ from collections import Counter
 from pathlib import Path
 
 from PIL import Image
+from category_prompts import prompt_for
 
 
 def clamp(v, lo=0, hi=1000):
@@ -76,7 +77,7 @@ def make_tile_sample(rec, tile_path, tile, boxes):
     seen = set()
     for b in boxes:
         if b["label"] not in seen:
-            labels.append(b["label"])
+            labels.append(prompt_for(b["label"]))
             seen.add(b["label"])
     human = ("<image-1>\n"
              "Locate all the instances that matches the following description: "

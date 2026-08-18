@@ -15,6 +15,7 @@ from collections import Counter
 from pathlib import Path
 
 from PIL import Image
+from category_prompts import prompt_for
 
 CLASS_NAMES = [
     "coating_rusting",
@@ -110,7 +111,7 @@ def make_detection_sample(rec):
     seen = set()
     for s in rec["shapes"]:
         if s["label"] not in seen:
-            labels.append(s["label"])
+            labels.append(prompt_for(s["label"]))
             seen.add(s["label"])
     human = ("<image-1>\n"
              "Locate all the instances that matches the following description: "
@@ -129,7 +130,7 @@ def make_grounding_sample(rec, label):
     if not boxes:
         return None
     human = (f"<image-1>\n"
-             f"Locate all the instances that match the following description: {label}.")
+             f"Locate all the instances that match the following description: {prompt_for(label)}.")
     gpt = "".join(box_tokens(s["label"], s["x1"], s["y1"], s["x2"], s["y2"],
                              rec["width"], rec["height"])
                   for s in boxes)
@@ -165,7 +166,7 @@ def make_crop_sample(rec, box, crop_path, margin=3.0, min_side=160):
     cw = right - left
     ch = bottom - top
     human = (f"<image-1>\n"
-             f'Locate all the instances that match the following description: {box["label"]}.')
+             f'Locate all the instances that match the following description: {prompt_for(box["label"])}.')
     gpt = box_tokens(box["label"], nx1, ny1, nx2, ny2, cw, ch)
     return {"conversations": [
         {"from": "human", "value": human},
