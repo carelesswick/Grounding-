@@ -93,3 +93,51 @@ multipart/form-data：
 - `bbox` 为像素坐标 `[x1,y1,x2,y2]`
 - `normalized_bbox` 为 LocateAnything 原始 0~1000 坐标
 - `confidence` 当前固定为 1.0，后续可接入置信度输出
+
+## SAM 分割接口
+
+### POST /api/v1/segment
+
+请求体：
+
+```json
+{
+  "image_path": "/path/to/image.jpg",
+  "boxes": [[132.0, 84.8, 235.2, 144.0]]
+}
+```
+
+响应：
+
+```json
+{
+  "image_size": [800, 800],
+  "masks": [
+    {"bbox": [132.0,84.8,235.2,144.0], "score": 0.95, "mask_base64": "..."}
+  ]
+}
+```
+
+## 可视化接口
+
+### POST /api/v1/visualize
+
+请求体：
+
+```json
+{
+  "image_path": "/path/to/image.jpg",
+  "boxes": [[132.0,84.8,235.2,144.0]],
+  "labels": ["fastener"]
+}
+```
+
+响应：
+
+```json
+{
+  "image_base64": "/9j/..."
+}
+```
+
+返回带检测框（和可选 mask 叠加）的 JPEG Base64 图片。
