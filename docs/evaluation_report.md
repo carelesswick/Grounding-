@@ -336,3 +336,38 @@ compare_individual/index.html
 - 模型路径：
   - rail: work_dirs/rail_lora_2000/checkpoint-2000
   - tower: work_dirs/tower_lora_2000/checkpoint-2000
+
+## 14. 新数据集可视化
+
+### rail_dataset（84 张验证图，子集）
+
+目录：
+
+```text
+/data1/liyifan/BigModel/work_dirs/vis/rail_2000/
+```
+
+包含 `img_000.jpg ~ img_083.jpg` 和 `index.html`。
+
+### tower_dataset（54 张验证图）
+
+目录：
+
+```text
+/data1/liyifan/BigModel/work_dirs/vis/tower_2000/
+```
+
+包含 `img_000.jpg ~ img_053.jpg` 和 `index.html`。
+
+图例：
+- 绿色框：GT
+- 红色框：模型预测
+
+下载：
+
+```bash
+scp -r server:/data1/liyifan/BigModel/work_dirs/vis/rail_2000 .
+scp -r server:/data1/liyifan/BigModel/work_dirs/vis/tower_2000 .
+```
+
+然后打开 `index.html` 浏览。

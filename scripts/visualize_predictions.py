@@ -20,9 +20,11 @@ def parse_boxes(text):
     return out
 
 
-def draw_boxes(img, boxes, color, width=4):
+def draw_boxes(img, boxes, color, width=14):
     draw = ImageDraw.Draw(img)
     for label, (x1, y1, x2, y2) in boxes:
+        x1, x2 = sorted([x1, x2])
+        y1, y2 = sorted([y1, y2])
         draw.rectangle([x1, y1, x2, y2], outline=color, width=width)
         draw.text((x1, max(0, y1 - 12)), label, fill=color)
     return img
@@ -45,9 +47,8 @@ def main():
     sys.path.insert(0, "/data1/liyifan/BigModel/grounding/LocateAnything")
     from locateanything_worker import LocateAnythingWorker
 
-    worker = LocateAnythingWorker(args.model, device="cuda")
-
     if args.mode == "single":
+        worker = LocateAnythingWorker(args.model, device="cuda")
         img = Image.open(args.image).convert("RGB")
         w, h = img.size
         if args.categories:
@@ -74,8 +75,13 @@ def main():
         preds_data = data["predictions"][args.index]
         gts_data = data["gts"][args.index]
         img = Image.open(preds_data["image"]).convert("RGB")
-        preds = [(p["label"], tuple(p["bbox"])) for p in preds_data["predictions"]]
-        gts = [(g["label"], tuple(g["bbox"])) for g in gts_data["gts"]]
+        max_w = 1600
+        scale = 1.0
+        if img.width > max_w:
+            scale = max_w / img.width
+            img = img.resize((max_w, int(img.height * scale)), Image.LANCZOS)
+        preds = [(p["label"], tuple(v * scale for v in p["bbox"])) for p in preds_data["predictions"]]
+        gts = [(g["label"], tuple(v * scale for v in g["bbox"])) for g in gts_data["gts"]]
         draw_boxes(img, preds, "red")
         draw_boxes(img, gts, "green")
         Path(args.output).parent.mkdir(parents=True, exist_ok=True)
