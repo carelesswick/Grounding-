@@ -402,3 +402,20 @@ scp -r server:/data1/liyifan/BigModel/work_dirs/vis/tower_2000 .
 
 - catenary 整图合并由于图像尺寸大（部分 8000×6000），完整评估过慢，当前使用 100 tile 子集作为参考
 - noisebarrier 整图 Precision 偏低，存在较多截断/错误类别名导致的额外 FP，后续可优化类别输出归一化
+
+## 16. catenary / noisebarrier 可视化
+
+### catenary_dataset（15 张验证图子集）
+
+```text
+/data1/liyifan/BigModel/work_dirs/vis/catenary_2000/
+```
+
+### noisebarrier_dataset（150 张验证图）
+
+```text
+/data1/liyifan/BigModel/work_dirs/vis/noisebarrier_2000/
+```
+
+每个目录包含 `index.html`，可直接浏览器查看。
+图例：绿色 GT，红色预测。
