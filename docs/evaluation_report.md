@@ -371,3 +371,34 @@ scp -r server:/data1/liyifan/BigModel/work_dirs/vis/tower_2000 .
 ```
 
 然后打开 `index.html` 浏览。
+
+## 15. catenary / noisebarrier 新数据集结果
+
+### 15.1 catenary_dataset（接触网）
+
+- 训练图：995，验证图：249
+- 类别：insulator / Nest / Fixed pulley / Bird protection device
+- 模型：work_dirs/catenary_lora_2000/checkpoint-2000
+
+| 指标 | Tile 级 | 整图合并（100 tile 子集） |
+|---|---:|---:|
+| Precision | 0.9437 | 0.4298 |
+| Recall | 0.9257 | 0.7313 |
+| F1 | 0.9346 | 0.5414 |
+
+### 15.2 noisebarrier_dataset（声屏障）
+
+- 训练图：597，验证图：150
+- 类别：column_rust / mortar_aging / board_rust_damage
+- 模型：work_dirs/noisebarrier_lora_2000/checkpoint-2000
+
+| 指标 | Tile 级 | 整图合并 |
+|---|---:|---:|
+| Precision | 0.8650 | 0.4043 |
+| Recall | 0.8181 | 0.8860 |
+| F1 | 0.8409 | 0.5553 |
+
+### 15.3 说明
+
+- catenary 整图合并由于图像尺寸大（部分 8000×6000），完整评估过慢，当前使用 100 tile 子集作为参考
+- noisebarrier 整图 Precision 偏低，存在较多截断/错误类别名导致的额外 FP，后续可优化类别输出归一化
